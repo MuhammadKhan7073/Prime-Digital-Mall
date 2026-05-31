@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "og": "node scripts/gen-og.cjs"
+    "og": "node scripts/gen-og.cjs",
+    "deploy": "node scripts/deploy.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",
