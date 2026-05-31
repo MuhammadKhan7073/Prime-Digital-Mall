@@ -40,11 +40,13 @@ export const metadata: Metadata = {
     description: 'Shop, eat, get well and get things done — across Pakistan. Fast delivery, cash on delivery.',
     url: SITE_URL,
     locale: 'en_PK',
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Prime Digital Mall — Pakistan’s Everything Platform' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Prime Digital Mall — Pakistan’s Everything Platform',
     description: 'Shop, food, health & home services across Pakistan.',
+    images: ['/og.png'],
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
   manifest: '/manifest.webmanifest',
