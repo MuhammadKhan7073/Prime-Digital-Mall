@@ -11,6 +11,7 @@ import { variantSummary } from '@/lib/variant'
 import { waCartOrder } from '@/lib/whatsapp'
 import { useHydrated } from '@/lib/useHydrated'
 import { cartSubtotal, lineUnitPrice, useCart } from '@/store/cart'
+import { useOrders } from '@/store/orders'
 import { cn } from '@/lib/cn'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { ProductImage } from '@/components/ui/ProductImage'
@@ -24,6 +25,7 @@ export default function CheckoutPage() {
   const items = useCart((s) => s.items)
   const subtotal = useCart(cartSubtotal)
   const clear = useCart((s) => s.clear)
+  const placeOrderRecord = useOrders((s) => s.place)
 
   const [form, setForm] = useState({ name: '', phone: '', address: '', city: '', notes: '' })
   const [pay, setPay] = useState<Pay>('cod')
@@ -36,6 +38,13 @@ export default function CheckoutPage() {
   const placeOrder = () => {
     if (!valid) return
     const ref = 'PDM-' + Math.floor(100000 + Math.random() * 900000)
+    placeOrderRecord({
+      ref,
+      kind: 'shop',
+      items: items.map((l) => { const p = getProduct(l.slug); return { name: p?.name ?? l.slug, qty: l.qty, price: lineUnitPrice(l), variant: variantSummary(l.variant) || undefined } }),
+      subtotal, delivery, total,
+      name: form.name, phone: form.phone, address: form.address, city: form.city, payment: pay,
+    })
     clear()
     router.push(`/checkout/success?ref=${ref}`)
   }

@@ -9,7 +9,7 @@ import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { ProductBrowser } from '@/components/ProductBrowser'
 import { DeliveryBadge } from '@/components/DeliveryBadge'
 import { Stars } from '@/components/ui/Stars'
-import { ShopAbout } from '@/components/ShopAbout'
+import { ShopAboutLive } from '@/components/ShopAboutLive'
 
 export function generateStaticParams() {
   return allShops.map((s) => ({ slug: s.slug }))
@@ -66,7 +66,7 @@ export default function ShopPage({ params }: { params: { slug: string } }) {
       <ProductBrowser products={products} enableCategoryFilter />
 
       {/* Quiet, optional depth — never obstructs the buy flow above. */}
-      <ShopAbout name={shop.name} about={shop.about} />
+      <ShopAboutLive slug={shop.slug} name={shop.name} about={shop.about} />
     </div>
   )
 }

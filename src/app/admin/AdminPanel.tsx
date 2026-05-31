@@ -15,12 +15,13 @@ import { useAdminOverrides } from '@/store/adminOverrides'
 import { EntityActions, EntityBadges } from './EntityActions'
 import { AddEntityModal } from './AddEntityModal'
 import { BulkBar } from './BulkBar'
+import { OrdersTab } from './OrdersTab'
 
 const ADMIN_CODE = process.env.NEXT_PUBLIC_ADMIN_CODE || 'prime-admin'
 const VICON: Record<string, typeof Store> = { shop: Store, food: UtensilsCrossed, health: Stethoscope, services: Wrench }
 const SUB_STYLE: Record<SubmissionStatus, string> = { pending: 'bg-warn/15 text-warn', approved: 'bg-success/15 text-success', rejected: 'bg-deal/15 text-deal' }
 
-type Tab = 'overview' | 'signups' | 'businesses' | 'listings'
+type Tab = 'overview' | 'orders' | 'signups' | 'businesses' | 'listings'
 type VFilter = 'all' | 'shop' | 'food' | 'health' | 'services'
 
 function timeAgo(ts: number) {
@@ -63,6 +64,7 @@ export function AdminPanel() {
 
   const TABS: { key: Tab; label: string; icon: typeof Store }[] = [
     { key: 'overview', label: 'Overview', icon: LayoutDashboard },
+    { key: 'orders', label: 'Orders', icon: Package },
     { key: 'signups', label: 'Signups', icon: ClipboardList },
     { key: 'businesses', label: 'Businesses', icon: Building2 },
     { key: 'listings', label: 'Listings', icon: Package },
@@ -96,6 +98,7 @@ export function AdminPanel() {
       {!hydrated ? <div className="py-20 text-center text-muted">Loading…</div> : (
         <>
           {tab === 'overview' && <OverviewTab onJump={setTab} />}
+          {tab === 'orders' && <OrdersTab />}
           {tab === 'signups' && <SignupsTab />}
           {tab === 'businesses' && <BusinessesTab />}
           {tab === 'listings' && <ListingsTab />}

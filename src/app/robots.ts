@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       // Everyone, including AI crawlers (GPTBot, PerplexityBot, Google-Extended, etc.), may index.
-      { userAgent: '*', allow: '/', disallow: ['/cart', '/checkout', '/foodcart', '/foodcheckout', '/bookings', '/admin'] },
+      { userAgent: '*', allow: '/', disallow: ['/cart', '/checkout', '/foodcart', '/foodcheckout', '/bookings', '/admin', '/seller'] },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
     host: SITE_URL,

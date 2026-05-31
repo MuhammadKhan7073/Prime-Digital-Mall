@@ -12,6 +12,7 @@ import { formatPrice } from '@/lib/format'
 import { waFoodOrder } from '@/lib/wa-verticals'
 import { useHydrated } from '@/lib/useHydrated'
 import { foodSubtotal, useFoodCart } from '@/store/foodcart'
+import { useOrders } from '@/store/orders'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 
 export default function FoodCheckout() {
@@ -21,6 +22,7 @@ export default function FoodCheckout() {
   const restaurant = useFoodCart((s) => s.restaurant)
   const subtotal = useFoodCart(foodSubtotal)
   const clear = useFoodCart((s) => s.clear)
+  const placeOrderRecord = useOrders((s) => s.place)
   const r = restaurant ? getRestaurant(restaurant) : undefined
   const delivery = r?.deliveryFee ?? 0
   const total = subtotal + (items.length ? delivery : 0)
@@ -33,6 +35,14 @@ export default function FoodCheckout() {
   const place = () => {
     if (!valid) return
     const ref = 'PDF-' + Math.floor(100000 + Math.random() * 900000)
+    placeOrderRecord({
+      ref,
+      kind: 'food',
+      items: items.map((l) => { const d = getDish(l.slug); return { name: d?.name ?? l.slug, qty: l.qty, price: d?.price ?? 0 } }),
+      subtotal, delivery: items.length ? delivery : 0, total,
+      name: form.name, phone: form.phone, address: form.address, city: form.city, payment: pay,
+      restaurant: r?.name,
+    })
     clear()
     router.push(`/checkout/success?ref=${ref}`)
   }
