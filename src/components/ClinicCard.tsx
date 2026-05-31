@@ -12,7 +12,7 @@ export function ClinicCard({ clinic: c }: { clinic: Clinic }) {
   const city = getCity(c.city)
   const docs = doctorsOf(c.slug).length
   return (
-    <Link href={`/health/${c.slug}`} className="group card flex flex-col overflow-hidden transition-shadow hover:shadow-pop">
+    <Link data-entity={`health:business:${c.slug}`} href={`/health/${c.slug}`} className="group card relative flex flex-col overflow-hidden transition-shadow hover:shadow-pop">
       <div className="flex h-20 items-center justify-end px-4" style={{ backgroundImage: `linear-gradient(135deg, ${c.from}, ${c.to})` }}>
         <span className="text-4xl opacity-90 drop-shadow">{c.emoji}</span>
       </div>

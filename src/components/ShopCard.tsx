@@ -10,8 +10,9 @@ export function ShopCard({ shop }: { shop: Shop }) {
   const city = cityOf(shop)
   return (
     <Link
+      data-entity={`shop:business:${shop.slug}`}
       href={`/shop/${shop.slug}`}
-      className="group card flex flex-col overflow-hidden transition-shadow hover:shadow-pop"
+      className="group card relative flex flex-col overflow-hidden transition-shadow hover:shadow-pop"
     >
       <div
         className="relative flex h-20 items-center justify-end overflow-hidden px-4"

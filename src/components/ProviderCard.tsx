@@ -8,7 +8,7 @@ import { Stars } from '@/components/ui/Stars'
 
 export function ProviderCard({ provider: p }: { provider: Provider }) {
   return (
-    <Link href={`/services/provider/${p.slug}`} className="group card flex flex-col overflow-hidden transition-shadow hover:shadow-pop">
+    <Link data-entity={`services:business:${p.slug}`} href={`/services/provider/${p.slug}`} className="group card relative flex flex-col overflow-hidden transition-shadow hover:shadow-pop">
       <div className="flex h-20 items-center justify-end px-4" style={{ backgroundImage: `linear-gradient(135deg, ${p.from}, ${p.to})` }}>
         <span className="text-4xl opacity-90 drop-shadow">{p.emoji}</span>
       </div>

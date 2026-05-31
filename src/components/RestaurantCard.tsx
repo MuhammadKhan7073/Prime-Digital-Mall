@@ -7,7 +7,7 @@ import { Stars } from '@/components/ui/Stars'
 
 export function RestaurantCard({ restaurant: r }: { restaurant: Restaurant }) {
   return (
-    <Link href={`/food/${r.slug}`} className="group card flex flex-col overflow-hidden transition-shadow hover:shadow-pop">
+    <Link data-entity={`food:business:${r.slug}`} href={`/food/${r.slug}`} className="group card relative flex flex-col overflow-hidden transition-shadow hover:shadow-pop">
       <div className="relative">
         <ProductImage from={r.from} to={r.to} emoji={r.emoji} className="aspect-[16/9] w-full" emojiClassName="text-5xl" />
         {!r.open && (

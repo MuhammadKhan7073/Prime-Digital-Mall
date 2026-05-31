@@ -9,7 +9,7 @@ import { Stars } from '@/components/ui/Stars'
 export function DoctorCard({ doctor: d }: { doctor: Doctor }) {
   const clinic = clinicOf(d)
   return (
-    <Link href={`/health/doctor/${d.slug}`} className="group card flex gap-3 p-3 transition-shadow hover:shadow-pop">
+    <Link data-entity={`health:listing:${d.slug}`} href={`/health/doctor/${d.slug}`} className="group card relative flex gap-3 p-3 transition-shadow hover:shadow-pop">
       <ProductImage from={d.from} to={d.to} emoji={d.emoji} className="h-20 w-20 shrink-0 rounded-xl" emojiClassName="text-3xl" />
       <div className="flex min-w-0 flex-1 flex-col">
         <h3 className="truncate font-bold text-ink group-hover:text-brand">{d.name}</h3>

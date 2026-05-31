@@ -7,7 +7,7 @@ import { AddDishButton } from './AddDishButton'
 export function DishRow({ dish }: { dish: Dish }) {
   const off = percentOff(dish.price, dish.compareAt)
   return (
-    <div className="flex gap-3 rounded-2xl border border-line bg-surface p-3">
+    <div data-entity={`food:listing:${dish.slug}`} className="relative flex gap-3 rounded-2xl border border-line bg-surface p-3">
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
           {dish.veg ? <Leaf size={13} className="text-success" /> : <span className="h-3 w-3 rounded-full border-2 border-deal" />}

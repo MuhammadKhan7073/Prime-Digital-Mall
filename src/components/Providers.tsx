@@ -6,6 +6,7 @@ import { SearchCommand } from '@/components/SearchCommand'
 import { CityPicker } from '@/components/CityPicker'
 import { Toaster } from '@/components/Toaster'
 import { FoodCartBar } from '@/components/food/FoodCartBar'
+import { StorefrontGuard } from '@/components/StorefrontGuard'
 
 /** Mounts all global overlays once, at the root. */
 export function Providers() {
@@ -17,6 +18,7 @@ export function Providers() {
       <QuickViewModal />
       <FoodCartBar />
       <Toaster />
+      <StorefrontGuard />
     </>
   )
 }

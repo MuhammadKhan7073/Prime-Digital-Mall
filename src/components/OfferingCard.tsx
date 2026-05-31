@@ -9,8 +9,9 @@ export function OfferingCard({ offering: o }: { offering: Offering }) {
   const provider = providerOf(o)
   return (
     <Link
+      data-entity={`services:listing:${o.slug}`}
       href={`/book/service/${o.slug}`}
-      className="group card flex gap-3 p-3 transition-shadow hover:shadow-pop"
+      className="group card relative flex gap-3 p-3 transition-shadow hover:shadow-pop"
     >
       <ProductImage from={o.from} to={o.to} emoji={o.emoji} className="h-20 w-20 shrink-0 rounded-xl" emojiClassName="text-3xl" />
       <div className="flex min-w-0 flex-1 flex-col">

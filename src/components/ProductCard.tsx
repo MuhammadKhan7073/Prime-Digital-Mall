@@ -18,7 +18,7 @@ export function ProductCard({ product }: { product: Product }) {
   const low = isLowStock(product)
 
   return (
-    <div className="group card relative flex flex-col overflow-hidden transition-shadow hover:shadow-pop">
+    <div data-entity={`shop:listing:${product.slug}`} className="group card relative flex flex-col overflow-hidden transition-shadow hover:shadow-pop">
       {/* media */}
       <Link href={`/product/${product.slug}`} className="relative block">
         <ProductImage from={product.from} to={product.to} emoji={product.emoji} className="aspect-square w-full" emojiClassName="text-6xl" />
