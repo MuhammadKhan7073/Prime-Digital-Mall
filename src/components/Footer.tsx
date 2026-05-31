@@ -28,7 +28,7 @@ export function Footer() {
             <li><Link href="/shops" className="hover:text-brand">All Shops</Link></li>
             <li><Link href="/request" className="hover:text-brand">Add your city</Link></li>
             <li><Link href="/request" className="hover:text-brand">Suggest a feature</Link></li>
-            <li><Link href="/request" className="hover:text-brand">List your shop</Link></li>
+            <li><Link href="/sell" className="font-semibold text-brand hover:underline">Sell on Prime →</Link></li>
           </ul>
         </div>
 
