@@ -1,0 +1,7 @@
+# Netlify config (alternative free host). Connect repo → it auto-detects this.
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "20"

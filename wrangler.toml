@@ -1,0 +1,6 @@
+# Cloudflare Pages config. Connect this repo in the Cloudflare dashboard
+# (Workers & Pages → Create → Pages → Connect to Git) with:
+#   Build command:           npm run build
+#   Build output directory:   out
+name = "prime-digital-mall"
+pages_build_output_dir = "out"

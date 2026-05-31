@@ -1,0 +1,212 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Prime Digital Mall — "Modern Bazaar" aesthetic
+   Warm paper, deep jade brand, saffron accent, optical-serif display type.
+   ========================================================================== */
+
+@layer base {
+  :root {
+    --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-display: Georgia, 'Times New Roman', serif;
+
+    /* warm paper surfaces */
+    --bg: 250 248 244;
+    --surface: 255 255 254;
+    --elevated: 245 242 236;
+    --line: 230 223 212;
+    --ink: 28 25 23;
+    --muted: 92 85 78;
+    --faint: 146 137 127;
+
+    /* deep refined jade — trust + heritage, not bright SaaS teal */
+    --brand: 15 99 80;
+    --brand-fg: 255 255 255;
+    --brand-soft: 223 240 232;
+
+    /* saffron / bazaar gold — warmth + premium accents */
+    --accent: 183 124 28;
+    --accent-soft: 247 235 210;
+
+    --deal: 196 40 40;
+    --success: 21 128 61;
+    --warn: 176 116 20;
+  }
+
+  .dark {
+    --bg: 20 18 16;
+    --surface: 28 25 22;
+    --elevated: 38 34 30;
+    --line: 55 49 43;
+    --ink: 240 236 230;
+    --muted: 172 163 152;
+    --faint: 120 112 103;
+
+    --brand: 52 199 161;
+    --brand-fg: 10 16 13;
+    --brand-soft: 22 47 40;
+
+    --accent: 224 178 86;
+    --accent-soft: 47 39 22;
+
+    --deal: 248 113 113;
+    --success: 74 222 128;
+    --warn: 251 191 36;
+  }
+
+  * {
+    border-color: rgb(var(--line));
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    position: relative;
+    background-color: rgb(var(--bg));
+    color: rgb(var(--ink));
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* soft warm atmosphere: two faint radial washes */
+    background-image:
+      radial-gradient(60rem 40rem at 100% -10%, rgb(var(--brand) / 0.06), transparent 60%),
+      radial-gradient(50rem 40rem at -10% 0%, rgb(var(--accent) / 0.06), transparent 55%);
+    background-attachment: fixed;
+  }
+
+  /* fine grain overlay for paper texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+  .dark body::before {
+    mix-blend-mode: screen;
+    opacity: 0.06;
+  }
+
+  /* keep app content above the grain layer */
+  body > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* display type on real headings — product-card titles are links, stay sans */
+  h1, h2 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: rgb(var(--accent) / 0.25);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--line));
+    border-radius: 999px;
+    border: 2px solid rgb(var(--bg));
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--faint));
+  }
+}
+
+@layer components {
+  .container-app {
+    @apply mx-auto w-full max-w-[1320px] px-4 sm:px-6 lg:px-8;
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+  }
+
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-xl text-sm font-semibold
+      transition-all duration-150 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-brand text-brand-fg shadow-card hover:brightness-[1.08];
+  }
+  .btn-accent {
+    @apply btn bg-accent text-white shadow-card hover:brightness-[1.08];
+  }
+  .btn-ghost {
+    @apply btn border border-line bg-surface text-ink hover:bg-elevated;
+  }
+  .btn-deal {
+    @apply btn bg-deal text-white shadow-card hover:brightness-[1.08];
+  }
+  .btn-wa {
+    @apply btn bg-[#25D366] text-white shadow-card hover:brightness-105;
+  }
+  .btn-lg {
+    @apply h-12 px-6 text-base;
+  }
+  .btn-md {
+    @apply h-10 px-4;
+  }
+  .btn-sm {
+    @apply h-8 px-3 text-xs;
+  }
+
+  .card {
+    @apply rounded-2xl border border-line bg-surface shadow-card;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-xs font-medium text-muted
+      transition-colors hover:border-brand hover:text-brand;
+  }
+  .chip-active {
+    @apply border-brand bg-brand-soft text-brand;
+  }
+
+  .input {
+    @apply h-11 w-full rounded-xl border border-line bg-surface px-3.5 text-sm text-ink outline-none
+      placeholder:text-faint focus:border-brand focus:ring-4 focus:ring-brand/15;
+  }
+
+  /* thin gold rule used as a section flourish */
+  .rule-accent {
+    @apply h-px w-10 rounded-full bg-accent;
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden bg-elevated;
+  }
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0 -translate-x-full animate-[shimmer_1.4s_infinite];
+    background: linear-gradient(90deg, transparent, rgb(var(--ink) / 0.05), transparent);
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
