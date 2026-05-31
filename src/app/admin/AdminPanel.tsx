@@ -14,6 +14,7 @@ import { adminBusinesses, adminListings } from '@/lib/adminDirectory'
 import { useAdminOverrides } from '@/store/adminOverrides'
 import { EntityActions, EntityBadges } from './EntityActions'
 import { AddEntityModal } from './AddEntityModal'
+import { BulkBar } from './BulkBar'
 
 const ADMIN_CODE = process.env.NEXT_PUBLIC_ADMIN_CODE || 'prime-admin'
 const VICON: Record<string, typeof Store> = { shop: Store, food: UtensilsCrossed, health: Stethoscope, services: Wrench }
@@ -259,6 +260,8 @@ function BusinessesTab() {
   const [vf, setVf] = useState<VFilter>('all')
   const [openBiz, setOpenBiz] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
+  const [sel, setSel] = useState<Set<string>>(new Set())
+  const toggleSel = (k: string) => setSel((s) => { const n = new Set(s); n.has(k) ? n.delete(k) : n.add(k); return n })
 
   const seed = useMemo(() => adminBusinesses(), [])
   const customBiz = custom.filter((c) => c.kind === 'business')
@@ -270,18 +273,26 @@ function BusinessesTab() {
   ]
 
   const shown = all.filter((b) => (vf === 'all' || b.vertical === vf) && (!q.trim() || `${b.name} ${b.city}`.toLowerCase().includes(q.toLowerCase())))
+  const visKeys = shown.filter((b) => !b.custom).map((b) => b.key)
+  const allSel = visKeys.length > 0 && visKeys.every((k) => sel.has(k))
 
   return (
     <div className="flex flex-col gap-4">
       <Toolbar q={q} setQ={setQ} vf={vf} setVf={setVf} onAdd={() => setAdding(true)} addLabel="Add business" />
+      {visKeys.length > 0 && (
+        <button onClick={() => setSel(allSel ? new Set() : new Set(visKeys))} className="self-end text-xs font-semibold text-brand hover:underline">
+          {allSel ? 'Deselect all' : 'Select all'}
+        </button>
+      )}
       <div className="flex flex-col gap-2">
         {shown.map((b) => {
           const Icon = VICON[b.vertical] ?? Store
           const bizListings = listings.filter((l) => l.businessKey === b.key)
           return (
-            <div key={b.key} className="card overflow-hidden">
+            <div key={b.key} className={cn('card overflow-hidden', sel.has(b.key) && 'ring-2 ring-brand')}>
               <div className="flex flex-wrap items-center justify-between gap-3 p-3">
                 <div className="flex min-w-0 items-center gap-3">
+                  {!b.custom && <input type="checkbox" checked={sel.has(b.key)} onChange={() => toggleSel(b.key)} className="h-4 w-4 shrink-0 accent-[rgb(var(--brand))]" aria-label="Select" />}
                   <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl text-white" style={{ backgroundImage: `linear-gradient(135deg, ${b.from}, ${b.to})` }}>{b.emoji}</span>
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
@@ -320,6 +331,7 @@ function BusinessesTab() {
         {shown.length === 0 && <div className="card p-10 text-center text-muted">No businesses match.</div>}
       </div>
       {adding && <AddEntityModal kind="business" onClose={() => setAdding(false)} />}
+      <BulkBar selected={Array.from(sel)} onClear={() => setSel(new Set())} />
     </div>
   )
 }
@@ -332,6 +344,8 @@ function ListingsTab() {
   const [q, setQ] = useState('')
   const [vf, setVf] = useState<VFilter>('all')
   const [adding, setAdding] = useState(false)
+  const [sel, setSel] = useState<Set<string>>(new Set())
+  const toggleSel = (k: string) => setSel((s) => { const n = new Set(s); n.has(k) ? n.delete(k) : n.add(k); return n })
 
   const seed = useMemo(() => adminListings(), [])
   const customListings = custom.filter((c) => c.kind === 'listing')
@@ -341,19 +355,29 @@ function ListingsTab() {
     ...customListings.map((c) => ({ key: c.key, businessKey: c.businessKey ?? '', vertical: c.vertical, slug: c.key, name: c.name, emoji: c.emoji, from: c.from, to: c.to, priceLabel: c.price ? `Rs ${c.price.toLocaleString('en-US')}` : '—', price: c.price ?? 0, href: '#', sub: c.sub ?? '', custom: true })),
   ]
 
-  const shown = all.filter((l) => (vf === 'all' || l.vertical === vf) && (!q.trim() || `${l.name} ${l.sub}`.toLowerCase().includes(q.toLowerCase())))
+  const shown = all.filter((l) => (vf === 'all' || l.vertical === vf) && (!q.trim() || `${l.name} ${l.sub}`.toLowerCase().includes(q.toLowerCase()))).slice(0, 200)
+  const visKeys = shown.filter((l) => !l.custom).map((l) => l.key)
+  const allSel = visKeys.length > 0 && visKeys.every((k) => sel.has(k))
 
   return (
     <div className="flex flex-col gap-4">
       <Toolbar q={q} setQ={setQ} vf={vf} setVf={setVf} onAdd={() => setAdding(true)} addLabel="Add listing" />
-      <p className="text-xs text-muted">{shown.length} listings</p>
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-muted">{shown.length} listings</p>
+        {visKeys.length > 0 && (
+          <button onClick={() => setSel(allSel ? new Set() : new Set(visKeys))} className="text-xs font-semibold text-brand hover:underline">
+            {allSel ? 'Deselect all' : 'Select all'}
+          </button>
+        )}
+      </div>
       <div className="flex flex-col gap-2">
-        {shown.slice(0, 200).map((l) => (
-          <ListingRow key={l.key} l={l} onDeleteCustom={l.custom ? () => removeCustom(l.key) : undefined} />
+        {shown.map((l) => (
+          <ListingRow key={l.key} l={l} onDeleteCustom={l.custom ? () => removeCustom(l.key) : undefined} checked={sel.has(l.key)} onToggleSel={l.custom ? undefined : () => toggleSel(l.key)} />
         ))}
         {shown.length === 0 && <div className="card p-10 text-center text-muted">No listings match.</div>}
       </div>
       {adding && <AddEntityModal kind="listing" onClose={() => setAdding(false)} />}
+      <BulkBar selected={Array.from(sel)} onClear={() => setSel(new Set())} />
     </div>
   )
 }
@@ -379,7 +403,7 @@ function Toolbar({ q, setQ, vf, setVf, onAdd, addLabel }: { q: string; setQ: (v:
 
 interface RowListing { key: string; name: string; emoji: string; from: string; to: string; priceLabel: string; price: number; sub: string; vertical: string }
 
-function ListingRow({ l, compact, onDeleteCustom }: { l: RowListing; compact?: boolean; onDeleteCustom?: () => void }) {
+function ListingRow({ l, compact, onDeleteCustom, checked, onToggleSel }: { l: RowListing; compact?: boolean; onDeleteCustom?: () => void; checked?: boolean; onToggleSel?: () => void }) {
   const prices = useAdminOverrides((s) => s.prices)
   const setPrice = useAdminOverrides((s) => s.setPrice)
   const clearPrice = useAdminOverrides((s) => s.clearPrice)
@@ -388,8 +412,11 @@ function ListingRow({ l, compact, onDeleteCustom }: { l: RowListing; compact?: b
   const override = prices[l.key]
 
   return (
-    <div className={cn('flex flex-wrap items-center justify-between gap-2', compact ? 'rounded-lg border border-line bg-surface p-2' : 'card p-3')}>
+    <div className={cn('flex flex-wrap items-center justify-between gap-2', compact ? 'rounded-lg border border-line bg-surface p-2' : 'card p-3', checked && 'ring-2 ring-brand')}>
       <div className="flex min-w-0 items-center gap-3">
+        {onToggleSel && (
+          <input type="checkbox" checked={!!checked} onChange={onToggleSel} className="h-4 w-4 shrink-0 accent-[rgb(var(--brand))]" aria-label="Select" />
+        )}
         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-white" style={{ backgroundImage: `linear-gradient(135deg, ${l.from}, ${l.to})` }}>{l.emoji}</span>
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">

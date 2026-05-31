@@ -42,12 +42,31 @@ export const categories: Category[] = [
 /* ------------------------------------------------------------------ */
 
 export const shops: Shop[] = [
-  { slug: 'karachi-electronics-hub', name: 'Karachi Electronics Hub', city: 'karachi', category: 'electronics', delivery: 'pakistan', rating: 4.7, ratingCount: 1840, verified: true, tagline: 'Genuine gadgets with local warranty', emoji: '🔌', from: '#0284c7', to: '#4f46e5', phone: '03001234567', followers: 12400, responseRate: 98, joinedDays: 240, badges: ['Verified', 'Fast Shipping'] },
+  { slug: 'karachi-electronics-hub', name: 'Karachi Electronics Hub', city: 'karachi', category: 'electronics', delivery: 'pakistan', rating: 4.7, ratingCount: 1840, verified: true, tagline: 'Genuine gadgets with local warranty', emoji: '🔌', from: '#0284c7', to: '#4f46e5', phone: '03001234567', followers: 12400, responseRate: 98, joinedDays: 240, badges: ['Verified', 'Fast Shipping'], about: {
+    story: 'Started in 2019 as a single counter in Saddar’s electronics market, Karachi Electronics Hub grew on one promise: only genuine products with real local warranty. Today we ship verified gadgets to every city in Pakistan, still personally testing each device before it leaves our store.',
+    established: '2019',
+    certifications: ['Registered with FBR', 'Authorized reseller', 'Warranty-backed'],
+    highlights: ['12,000+ happy customers', 'Same-day dispatch from Karachi', '7-day easy returns'],
+    policies: [
+      { label: 'Warranty', value: 'Local warranty on every product, claim in-store or by courier' },
+      { label: 'Returns', value: '7-day return if unused & sealed' },
+      { label: 'Delivery', value: 'All Pakistan via TCS / Leopards, 2–4 days' },
+    ],
+  } },
   { slug: 'gulberg-mobile-zone', name: 'Gulberg Mobile Zone', city: 'lahore', category: 'mobile', delivery: 'pakistan', rating: 4.6, ratingCount: 2310, verified: true, tagline: 'Latest phones at honest prices', emoji: '📱', from: '#6366f1', to: '#a855f7', phone: '03007654321', followers: 21800, responseRate: 97, joinedDays: 410, badges: ['Verified', 'Top Seller'] },
   { slug: 'lahore-fashion-house', name: 'Lahore Fashion House', city: 'lahore', category: 'fashion', delivery: 'pakistan', rating: 4.5, ratingCount: 1620, verified: true, tagline: 'Trendy outfits delivered nationwide', emoji: '🧵', from: '#db2777', to: '#f97316', phone: '03009876543', followers: 9800, responseRate: 96, joinedDays: 320, badges: ['Verified'] },
   { slug: 'peshawar-threads', name: 'Peshawar Threads', city: 'peshawar', category: 'fashion', delivery: 'city', deliversTo: ['islamabad', 'rawalpindi'], rating: 4.4, ratingCount: 540, verified: false, tagline: 'Handmade waistcoats & chappals', emoji: '🥿', from: '#b45309', to: '#16a34a', phone: '03110223344', followers: 3100, responseRate: 92, joinedDays: 120, badges: [] },
   { slug: 'islamabad-grocery-mart', name: 'Islamabad Grocery Mart', city: 'islamabad', category: 'grocery', delivery: 'city', deliversTo: ['rawalpindi'], rating: 4.3, ratingCount: 980, verified: true, tagline: 'Fresh groceries at your doorstep', emoji: '🛒', from: '#16a34a', to: '#84cc16', phone: '03331122334', followers: 5600, responseRate: 99, joinedDays: 90, badges: ['Verified', 'Same-Day'] },
-  { slug: 'multan-mango-mart', name: 'Multan Mango Mart', city: 'multan', category: 'grocery', delivery: 'pakistan', rating: 4.8, ratingCount: 760, verified: true, tagline: 'Sunshine fruit & pantry staples', emoji: '🥭', from: '#f59e0b', to: '#16a34a', phone: '03219988776', followers: 7200, responseRate: 98, joinedDays: 180, badges: ['Verified', 'Seasonal'] },
+  { slug: 'multan-mango-mart', name: 'Multan Mango Mart', city: 'multan', category: 'grocery', delivery: 'pakistan', rating: 4.8, ratingCount: 760, verified: true, tagline: 'Sunshine fruit & pantry staples', emoji: '🥭', from: '#f59e0b', to: '#16a34a', phone: '03219988776', followers: 7200, responseRate: 98, joinedDays: 180, badges: ['Verified', 'Seasonal'], about: {
+    story: 'Three generations of our family have grown mangoes in the orchards of Multan. Multan Mango Mart brings that harvest straight from our trees to your door — picked ripe, packed with care, no middlemen.',
+    established: '1998 (orchard) · 2020 (online)',
+    certifications: ['Farm-direct', 'Pesticide-tested', 'Grade-A export quality'],
+    highlights: ['Chaunsa, Sindhri & Anwar Ratol in season', 'Picked-to-shipped in 24 hours', 'Gift packing available'],
+    policies: [
+      { label: 'Freshness', value: 'Replaced free if it arrives spoiled — just send a photo' },
+      { label: 'Season', value: 'Mangoes available May–August; pantry staples year-round' },
+    ],
+  } },
   { slug: 'clifton-home-living', name: 'Clifton Home & Living', city: 'karachi', category: 'home', delivery: 'pakistan', rating: 4.6, ratingCount: 690, verified: true, tagline: 'Cozy upgrades for every room', emoji: '🛋️', from: '#0d9488', to: '#22c55e', phone: '03002223344', followers: 6400, responseRate: 97, joinedDays: 260, badges: ['Verified'] },
   { slug: 'pindi-beauty-bar', name: 'Pindi Beauty Bar', city: 'rawalpindi', category: 'beauty', delivery: 'city', deliversTo: ['islamabad'], rating: 4.7, ratingCount: 1320, verified: true, tagline: 'Clean beauty that loves your skin', emoji: '💄', from: '#e11d48', to: '#a855f7', phone: '03445566778', followers: 14200, responseRate: 96, joinedDays: 200, badges: ['Verified', 'Trending'] },
   { slug: 'faisalabad-appliances', name: 'Faisalabad Appliances', city: 'faisalabad', category: 'appliances', delivery: 'pakistan', rating: 4.5, ratingCount: 880, verified: true, tagline: 'Big-name appliances, small prices', emoji: '🧺', from: '#475569', to: '#0ea5e9', phone: '03116677889', followers: 4900, responseRate: 95, joinedDays: 300, badges: ['Verified', 'Installments'] },

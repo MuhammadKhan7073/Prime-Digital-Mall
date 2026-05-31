@@ -42,6 +42,24 @@ export interface Shop {
   responseRate: number
   joinedDays: number
   badges: string[]
+  /**
+   * Optional depth — shown only in a de-emphasized, collapsed "About this shop"
+   * section. Never obstructs buying; explorable by those who want it.
+   */
+  about?: ShopAbout
+}
+
+/** Progressive-disclosure profile a business can fill in to tell its story. */
+export interface ShopAbout {
+  story?: string
+  established?: string
+  /** e.g. ['Registered business', 'ISO 9001', 'Halal certified']. */
+  certifications?: string[]
+  /** Free-form highlights: awards, scale, specialties. */
+  highlights?: string[]
+  policies?: { label: string; value: string }[]
+  /** Optional social/contact links. */
+  links?: { label: string; url: string }[]
 }
 
 export interface VariantOption {

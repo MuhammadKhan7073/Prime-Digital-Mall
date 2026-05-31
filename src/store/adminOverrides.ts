@@ -45,6 +45,8 @@ interface AdminState {
   has: (key: string, state: EntityState) => boolean
   toggle: (key: string, state: EntityState, label: string) => void
   setFlag: (key: string, state: EntityState, on: boolean, label: string) => void
+  /** Apply one flag (or restore) to many entities at once, logged as a single batch. */
+  bulkApply: (keys: string[], action: EntityState | 'restore') => void
   clearFlags: (key: string, label: string) => void
   addCustom: (e: Omit<CustomEntity, 'createdAt'>) => void
   removeCustom: (key: string) => void
@@ -83,6 +85,22 @@ export const useAdminOverrides = create<AdminState>()(
           const flags = { ...s.flags, [key]: Array.from(cur) }
           if (cur.size === 0) delete flags[key]
           const entry: LogEntry = { id: ++logSeq, ts: Date.now(), action: `${on ? 'set' : 'unset'} ${state}`, target: label }
+          return { flags, log: [entry, ...s.log].slice(0, 100) }
+        }),
+
+      bulkApply: (keys, action) =>
+        set((s) => {
+          const flags = { ...s.flags }
+          for (const key of keys) {
+            if (action === 'restore') { delete flags[key]; continue }
+            const cur = new Set(flags[key] ?? [])
+            cur.add(action)
+            if (action === 'removed') { cur.delete('hidden'); cur.delete('frozen'); cur.delete('featured') }
+            if (action === 'hidden') cur.delete('frozen')
+            if (action === 'frozen') cur.delete('hidden')
+            flags[key] = Array.from(cur)
+          }
+          const entry: LogEntry = { id: ++logSeq, ts: Date.now(), action: `bulk ${action}`, target: `${keys.length} items` }
           return { flags, log: [entry, ...s.log].slice(0, 100) }
         }),
 
