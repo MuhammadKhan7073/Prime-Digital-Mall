@@ -1,57 +1,72 @@
 # Prime Digital Mall
 
-Pakistan's customer-first marketplace. A fast, self-contained Next.js storefront built for **buyers** — minimum clicks to buy, impulse-friendly, zero setup.
+Pakistan's **everything platform** — shop products, order food, book doctors, and book home services, in one fast, customer-first web app. Built with Next.js 14 + Tailwind, exported as a fully static site so it hosts **free** and loads instantly.
 
-> No database, no backend, no API keys. Clone → install → run. All catalog data is bundled (`src/data`), cart/wishlist persist in the browser.
+> No backend required to run or deploy. All catalog data is bundled (`src/data`); cart, wishlist, and bookings persist in the browser. A Supabase-ready backend (`src/lib/backend.ts`) turns on the moment you add env keys — see `BACKEND.md`.
+
+🇵🇰 PKR pricing · WhatsApp ordering · Cash on Delivery / Easypaisa / bank · city-aware.
 
 ## Run it
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
+npm run dev        # http://localhost:3000
 ```
 
-Production:
+Production / static export:
 
 ```bash
-npm run build && npm start
+npm run build      # outputs a fully static  out/  folder
+npx serve out      # preview the built site
 ```
 
 Requires Node 18+.
 
+## The four verticals
+
+| Vertical | Path | Model | Has |
+|----------|------|-------|-----|
+| 🛍 **Shopping** | `/shop` | order → cart → checkout | shops, products, categories, deals |
+| 🍔 **Food** | `/food` | order → food cart → checkout | restaurants, dishes, cuisines |
+| 🩺 **Health** | `/health` | book → slot/mode → confirm | clinics, doctors, specialties |
+| 🔧 **Services** | `/services` | book → date+address → confirm | cleaning, repairs, beauty, tutoring, movers… |
+
+One home **hub** (`/`) routes into all four. Two interaction models only — **order** or **book** — so it never feels like four separate apps.
+
 ## What's inside
 
-- **Customer-first, no fluff** — lands you in shopping, not marketing. No "how it works", no pricing pages, no seller onboarding in the buyer's face.
-- **Fewest clicks to buy (impulse)**
-  - 1-click **Add** on every card (auto-picks default variant)
-  - **Quick view** modal — buy from the grid without leaving the page
-  - **Buy now** → straight to 1-step checkout
-  - Slide-in **cart drawer** opens on add, with checkout CTA
-- **Discovery everywhere** — Ctrl/⌘+K command search with live suggestions, flash-deal countdown, trending / new / category rows, recently viewed, frequently-bought-together, related items.
-- **Pakistan model** — city picker, per-shop delivery type (all-Pakistan / city / pickup), personalized "Popular in your city", PKR pricing, WhatsApp ordering, Easypaisa / Meezan / Cash-on-Delivery at checkout.
-- **Basket builders** — free-delivery progress bar, wishlist, save-for-later, bundle pricing.
-- **Polished** — light/dark theme, responsive, mobile bottom tab bar, toasts, skeleton-ready design system, gradient+emoji product art (never a broken image).
+- **Customer-first, low-click** — 1-click Add, Quick-view modal, Buy-now, slide-in cart drawer, mobile sticky buy bar, bundle "add all".
+- **Universal search** (`/find`) + ⌘/Ctrl-K — across products, food, doctors, services.
+- **Discovery** — flash-deal countdown, trending / new / category rows, recently viewed, frequently-bought-together, related.
+- **Pakistan model** — city picker, per-shop delivery type, WhatsApp order/booking, COD + Easypaisa + Meezan at checkout.
+- **Business self-serve** — `/sell` signup → `/admin` approval queue (demo mode = local; real mode = Supabase).
+- **Polish** — light/dark, mobile bottom tabs, toasts, gradient+emoji product art (never a broken image), custom "Modern Bazaar" design (Fraunces + Plus Jakarta Sans, warm paper + jade/saffron).
+- **SEO + AI-search ready** — `sitemap.xml`, `robots.txt` (AI crawlers allowed), `manifest.webmanifest`, `llms.txt`, OG image, JSON-LD (Organization, WebSite, Product, Restaurant, Physician, LocalBusiness).
 
 ## Structure
 
 ```
 src/
-  app/                 routes (home, category, shop, product, search, deals, cart, checkout, wishlist)
-  components/          UI (Header, ProductCard, QuickView, CartDrawer, ProductBrowser, …)
-    ui/                atoms (Price, Stars, Badge, ProductImage, QuantityStepper)
-  data/                catalog.ts (shops, products, reviews, cities) + types.ts
-  lib/                 catalog queries, formatting, whatsapp links
-  store/               zustand stores (cart, wishlist, recent, ui) — persisted
+  app/                 routes (home hub, shop, food, health, services, find, sell, admin, cart, checkout, bookings…)
+  components/          UI (Header, cards, QuickView, CartDrawer, BookingForm, JsonLd…)
+  data/                catalog.ts, food.ts, health.ts, services.ts, verticals.ts + types
+  lib/                 query layers (catalog/food/health/services/directory), supabase client, backend
+  store/               zustand stores (cart, foodcart, wishlist, recent, ui, bookings, submissions)
+supabase/schema.sql    Phase-2 DB schema (tables + RLS + roles + approval gate)
+scripts/gen-og.cjs     regenerate the OG share image  (npm run og)
 ```
+
+## Deploy free (≈$10/yr for a domain, $0 hosting)
+
+Static export → host free on **Cloudflare Pages** (fastest in Pakistan) / Netlify / GitHub Pages. Step-by-step in **`DEPLOY.md`**. Get indexed on Google + AI search the same day (Search Console + Bing → submit `sitemap.xml`).
+
+## Docs
+
+- `DEPLOY.md` — go live + get indexed
+- `BACKEND.md` — turn on real multi-user mode (Supabase + admin)
+- `BLUEPRINT_V2.md` — architecture of the 4-vertical platform
+- `GO-LIVE.md` — SEO/AI-search checklist
 
 ## Edit the catalog
 
-Everything lives in `src/data/catalog.ts`:
-- `cities`, `categories`, `shops`, and a `seeds[]` array of products (prices in whole PKR).
-- Add a product by appending one object to `seeds` — descriptions, reviews, and badges are generated automatically.
-
-## Going to production later
-
-Swap the in-repo data layer for a real backend by reimplementing `src/lib/catalog.ts` against your DB/API — the UI imports only from there. (A Prisma + Postgres schema from earlier iterations is available in the sibling `prime-digital-mall-v2` folder.)
-
-Payment / contact details are centralized in `PAYMENT` (`src/data/catalog.ts`).
+Everything is in `src/data/*.ts` (prices in whole PKR). Add a product/restaurant/doctor/provider by appending one object — descriptions, reviews, badges, and pages generate automatically.
