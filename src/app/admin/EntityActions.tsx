@@ -1,6 +1,6 @@
 'use client'
 
-import { Eye, EyeOff, Snowflake, Star, Trash2, RotateCcw } from 'lucide-react'
+import { Eye, EyeOff, Snowflake, Star, Trash2, RotateCcw, BadgeCheck } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useAdminOverrides, type EntityState } from '@/store/adminOverrides'
 
@@ -9,6 +9,8 @@ const FLAG_STYLE: Record<EntityState, string> = {
   frozen: 'bg-sky-500/15 text-sky-500',
   featured: 'bg-amber-500/15 text-amber-600',
   removed: 'bg-deal/15 text-deal',
+  verified: 'bg-brand-soft text-brand',
+  unverified: 'bg-warn/15 text-warn',
 }
 
 /** Render the current moderation badges for an entity. */
@@ -24,8 +26,8 @@ export function EntityBadges({ entityKey }: { entityKey: string }) {
   )
 }
 
-/** Action buttons for hide / freeze / feature / remove / restore. */
-export function EntityActions({ entityKey, label }: { entityKey: string; label: string }) {
+/** Action buttons for hide / freeze / feature / verify / remove / restore. */
+export function EntityActions({ entityKey, label, canVerify }: { entityKey: string; label: string; canVerify?: boolean }) {
   const flags = useAdminOverrides((s) => s.flags[entityKey] ?? [])
   const toggle = useAdminOverrides((s) => s.toggle)
   const clear = useAdminOverrides((s) => s.clearFlags)
@@ -50,6 +52,9 @@ export function EntityActions({ entityKey, label }: { entityKey: string; label: 
           <Btn active={has('hidden')} on={() => toggle(entityKey, 'hidden', label)} color="border-faint text-faint" icon={has('hidden') ? <EyeOff size={15} /> : <Eye size={15} />} title={has('hidden') ? 'Unhide' : 'Hide from storefront'} />
           <Btn active={has('frozen')} on={() => toggle(entityKey, 'frozen', label)} color="border-sky-500 text-sky-500" icon={<Snowflake size={15} />} title={has('frozen') ? 'Unfreeze' : 'Freeze (visible, not orderable)'} />
           <Btn active={has('featured')} on={() => toggle(entityKey, 'featured', label)} color="border-amber-500 text-amber-600" icon={<Star size={15} className={has('featured') ? 'fill-amber-500' : ''} />} title={has('featured') ? 'Unfeature' : 'Feature (boost)'} />
+          {canVerify && (
+            <Btn active={has('verified')} on={() => toggle(entityKey, 'verified', label)} color="border-brand text-brand" icon={<BadgeCheck size={15} />} title={has('verified') ? 'Remove verified badge' : 'Grant verified badge'} />
+          )}
         </>
       )}
       <Btn active={removed} on={() => toggle(entityKey, 'removed', label)} color="border-deal text-deal" icon={<Trash2 size={15} />} title={removed ? 'Undo remove' : 'Remove'} />

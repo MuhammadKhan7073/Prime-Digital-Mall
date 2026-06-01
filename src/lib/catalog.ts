@@ -84,6 +84,31 @@ export function pairsWith(p: Product, limit = 3): Product[] {
 
 export const getProducts = (slugs: string[]): Product[] => slugs.map(getProduct).filter(Boolean) as Product[]
 
+/**
+ * "Customers also bought" — recommendations derived from what's already in the
+ * cart (pairsWith + same category/shop), excluding items already added.
+ * Falls back to bestsellers when the cart is empty.
+ */
+export function recommendedFor(cartSlugs: string[], limit = 12): Product[] {
+  const inCart = new Set(cartSlugs)
+  if (inCart.size === 0) return bestsellers(limit)
+  const scored = new Map<string, number>()
+  for (const slug of cartSlugs) {
+    const p = getProduct(slug)
+    if (!p) continue
+    for (const c of pairsWith(p, 6)) scored.set(c.slug, (scored.get(c.slug) ?? 0) + 3)
+    for (const r of related(p, 8)) scored.set(r.slug, (scored.get(r.slug) ?? 0) + 1)
+  }
+  const ranked = [...scored.entries()]
+    .filter(([s]) => !inCart.has(s))
+    .sort((a, b) => b[1] - a[1])
+    .map(([s]) => getProduct(s))
+    .filter(Boolean) as Product[]
+  if (ranked.length >= limit) return ranked.slice(0, limit)
+  const filler = bestsellers(limit * 2).filter((p) => !inCart.has(p.slug) && !ranked.includes(p))
+  return [...ranked, ...filler].slice(0, limit)
+}
+
 /* ---------------- reviews ---------------- */
 
 export const reviewsFor = (slug: string): Review[] => reviews.filter((r) => r.productSlug === slug)

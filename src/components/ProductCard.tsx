@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/Badge'
 import { WishlistButton } from '@/components/WishlistButton'
 import { AddToCartButton } from '@/components/AddToCartButton'
 import { QuickViewButton } from '@/components/QuickViewButton'
+import { CompareButton } from '@/components/CompareButton'
 
 export function ProductCard({ product }: { product: Product }) {
   const shop = shopOf(product)
@@ -44,7 +45,10 @@ export function ProductCard({ product }: { product: Product }) {
         )}
       </Link>
 
-      <WishlistButton slug={product.slug} floating className="absolute right-2 top-2" />
+      <div className="absolute right-2 top-2 flex flex-col gap-1.5">
+        <WishlistButton slug={product.slug} floating />
+        <CompareButton slug={product.slug} />
+      </div>
 
       {/* body */}
       <div className="flex flex-1 flex-col gap-1.5 p-3">

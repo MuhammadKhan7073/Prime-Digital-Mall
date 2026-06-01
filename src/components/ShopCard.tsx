@@ -1,10 +1,10 @@
 import Link from 'next/link'
-import { BadgeCheck } from 'lucide-react'
 import type { Shop } from '@/data/types'
 import { cityOf, shopProductCount } from '@/lib/catalog'
 import { formatCompact } from '@/lib/format'
 import { Stars } from '@/components/ui/Stars'
 import { DeliveryBadge } from '@/components/DeliveryBadge'
+import { VerifiedTag } from '@/components/VerifiedTag'
 
 export function ShopCard({ shop }: { shop: Shop }) {
   const city = cityOf(shop)
@@ -23,7 +23,7 @@ export function ShopCard({ shop }: { shop: Shop }) {
       <div className="flex flex-1 flex-col gap-2 p-3">
         <div className="flex items-center gap-1">
           <h3 className="truncate font-bold text-ink group-hover:text-brand">{shop.name}</h3>
-          {shop.verified && <BadgeCheck size={16} className="shrink-0 text-brand" />}
+          <VerifiedTag entityKey={`shop:business:${shop.slug}`} seedVerified={shop.verified} />
         </div>
         <p className="line-clamp-1 text-xs text-muted">{shop.tagline}</p>
         <Stars rating={shop.rating} count={shop.ratingCount} showValue />

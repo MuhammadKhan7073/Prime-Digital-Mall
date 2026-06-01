@@ -4,7 +4,7 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
 /** Moderation state an admin can apply to any business or listing. */
-export type EntityState = 'hidden' | 'frozen' | 'featured' | 'removed'
+export type EntityState = 'hidden' | 'frozen' | 'featured' | 'removed' | 'verified' | 'unverified'
 
 export interface CustomEntity {
   key: string
@@ -81,6 +81,8 @@ export const useAdminOverrides = create<AdminState>()(
             if (state === 'removed') { cur.delete('hidden'); cur.delete('frozen'); cur.delete('featured') }
             if (state === 'hidden') { cur.delete('frozen') }
             if (state === 'frozen') { cur.delete('hidden') }
+            if (state === 'verified') cur.delete('unverified')
+            if (state === 'unverified') cur.delete('verified')
           } else cur.delete(state)
           const flags = { ...s.flags, [key]: Array.from(cur) }
           if (cur.size === 0) delete flags[key]

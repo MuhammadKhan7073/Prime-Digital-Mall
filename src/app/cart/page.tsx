@@ -13,6 +13,7 @@ import { ProductImage } from '@/components/ui/ProductImage'
 import { QuantityStepper } from '@/components/ui/QuantityStepper'
 import { FreeShipBar } from '@/components/FreeShipBar'
 import { ProductRow } from '@/components/ProductRow'
+import { CartCrossSell } from '@/components/CartCrossSell'
 
 const DELIVERY_FLAT = 199
 
@@ -136,11 +137,8 @@ export default function CartPage() {
         </aside>
       </div>
 
-      {/* recommendations */}
-      <div className="mt-10">
-        <h2 className="mb-3 text-lg font-extrabold text-ink">You might also like</h2>
-        <ProductRow products={bestsellers(12)} />
-      </div>
+      {/* smart recommendations based on cart contents */}
+      <CartCrossSell />
     </div>
   )
 }

@@ -7,6 +7,9 @@ import { CityPicker } from '@/components/CityPicker'
 import { Toaster } from '@/components/Toaster'
 import { FoodCartBar } from '@/components/food/FoodCartBar'
 import { StorefrontGuard } from '@/components/StorefrontGuard'
+import { CompareBar } from '@/components/CompareBar'
+import { PWARegister } from '@/components/PWARegister'
+import { InstallPrompt } from '@/components/InstallPrompt'
 
 /** Mounts all global overlays once, at the root. */
 export function Providers() {
@@ -17,8 +20,11 @@ export function Providers() {
       <CartDrawer />
       <QuickViewModal />
       <FoodCartBar />
+      <CompareBar />
       <Toaster />
       <StorefrontGuard />
+      <PWARegister />
+      <InstallPrompt />
     </>
   )
 }

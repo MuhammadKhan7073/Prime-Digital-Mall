@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "og": "node scripts/gen-og.cjs",
+    "icons": "node scripts/gen-icons.cjs",
     "deploy": "node scripts/deploy.mjs"
   },
   "dependencies": {

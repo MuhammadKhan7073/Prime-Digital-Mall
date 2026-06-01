@@ -4,12 +4,15 @@ import { useEffect, useMemo, useState } from 'react'
 import {
   Lock, ShieldCheck, Check, X, Trash2, Store, UtensilsCrossed, Stethoscope, Wrench,
   RefreshCw, Database, HardDrive, Search, LayoutDashboard, ClipboardList, Building2,
-  Package, Plus, ScrollText, ChevronRight, Pencil,
+  Package, Plus, ScrollText, ChevronRight, Pencil, Download,
 } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { formatPrice } from '@/lib/format'
+import { downloadCSV } from '@/lib/csv'
 import { useHydrated } from '@/lib/useHydrated'
 import { backendMode, fetchSubmissionsRemote, setStatusRemote } from '@/lib/backend'
 import { useSubmissions, type BusinessSubmission, type SubmissionStatus } from '@/store/submissions'
+import { useOrders } from '@/store/orders'
 import { adminBusinesses, adminListings } from '@/lib/adminDirectory'
 import { useAdminOverrides } from '@/store/adminOverrides'
 import { EntityActions, EntityBadges } from './EntityActions'
@@ -116,21 +119,23 @@ function OverviewTab({ onJump }: { onJump: (t: Tab) => void }) {
   const custom = useAdminOverrides((s) => s.custom)
   const log = useAdminOverrides((s) => s.log)
   const resetAll = useAdminOverrides((s) => s.resetAll)
+  const orders = useOrders((s) => s.orders)
 
   const businesses = useMemo(() => adminBusinesses(), [])
   const listings = useMemo(() => adminListings(), [])
   const flagVals = Object.values(flags)
   const count = (f: string) => flagVals.filter((arr) => (arr as string[]).includes(f)).length
+  const revenue = orders.filter((o) => o.status !== 'cancelled').reduce((n, o) => n + o.total, 0)
 
   const cards = [
-    { k: 'Businesses', v: businesses.length + custom.filter((c) => c.kind === 'business').length, c: 'text-ink', t: 'businesses' as Tab },
-    { k: 'Listings', v: listings.length + custom.filter((c) => c.kind === 'listing').length, c: 'text-ink', t: 'listings' as Tab },
-    { k: 'Pending signups', v: localItems.filter((i) => i.status === 'pending').length, c: 'text-warn', t: 'signups' as Tab },
-    { k: 'Hidden', v: count('hidden'), c: 'text-faint', t: 'businesses' as Tab },
-    { k: 'Frozen', v: count('frozen'), c: 'text-sky-500', t: 'businesses' as Tab },
-    { k: 'Featured', v: count('featured'), c: 'text-amber-600', t: 'businesses' as Tab },
-    { k: 'Removed', v: count('removed'), c: 'text-deal', t: 'businesses' as Tab },
-    { k: 'Admin-added', v: custom.length, c: 'text-brand', t: 'businesses' as Tab },
+    { k: 'Businesses', v: String(businesses.length + custom.filter((c) => c.kind === 'business').length), c: 'text-ink', t: 'businesses' as Tab },
+    { k: 'Listings', v: String(listings.length + custom.filter((c) => c.kind === 'listing').length), c: 'text-ink', t: 'listings' as Tab },
+    { k: 'Orders', v: String(orders.length), c: 'text-ink', t: 'orders' as Tab },
+    { k: 'Revenue', v: formatPrice(revenue), c: 'text-success', t: 'orders' as Tab },
+    { k: 'Pending signups', v: String(localItems.filter((i) => i.status === 'pending').length), c: 'text-warn', t: 'signups' as Tab },
+    { k: 'Featured', v: String(count('featured')), c: 'text-amber-600', t: 'businesses' as Tab },
+    { k: 'Hidden / frozen', v: String(count('hidden') + count('frozen')), c: 'text-faint', t: 'businesses' as Tab },
+    { k: 'Admin-added', v: String(custom.length), c: 'text-brand', t: 'businesses' as Tab },
   ]
 
   return (
@@ -142,6 +147,17 @@ function OverviewTab({ onJump }: { onJump: (t: Tab) => void }) {
             <p className={cn('text-2xl font-extrabold tabular', s.c)}>{s.v}</p>
           </button>
         ))}
+      </div>
+
+      {/* CSV exports */}
+      <div className="card p-5">
+        <h2 className="mb-3 flex items-center gap-2 font-bold text-ink"><Download size={18} className="text-brand" /> Export data (CSV)</h2>
+        <div className="flex flex-wrap gap-2">
+          <button onClick={() => downloadCSV('businesses.csv', adminBusinesses().map((b) => ({ name: b.name, vertical: b.vertical, city: b.city, rating: b.rating, verified: b.verified, listings: b.listingCount, status: (flags[b.key] ?? []).join('|') || 'live' })))} className="btn-ghost btn-sm"><Building2 size={14} /> Businesses</button>
+          <button onClick={() => downloadCSV('listings.csv', adminListings().map((l) => ({ name: l.name, vertical: l.vertical, business: l.sub, price: l.price, status: (flags[l.key] ?? []).join('|') || 'live' })))} className="btn-ghost btn-sm"><Package size={14} /> Listings</button>
+          <button onClick={() => downloadCSV('signups.csv', localItems.map((s) => ({ id: s.id, business: s.businessName, owner: s.ownerName, vertical: s.vertical, category: s.category, city: s.city, phone: s.phone, status: s.status })))} className="btn-ghost btn-sm"><ClipboardList size={14} /> Signups</button>
+          <button onClick={() => downloadCSV('orders.csv', orders.map((o) => ({ id: o.id, kind: o.kind, customer: o.name, phone: o.phone, city: o.city, items: o.items.reduce((n, i) => n + i.qty, 0), total: o.total, payment: o.payment, status: o.status })))} className="btn-ghost btn-sm"><Package size={14} /> Orders</button>
+        </div>
       </div>
 
       <div className="card p-5">
@@ -316,7 +332,7 @@ function BusinessesTab() {
                   {b.custom ? (
                     <button onClick={() => removeCustom(b.key)} className="grid h-8 w-8 place-items-center rounded-lg border border-line text-deal hover:bg-deal/10" title="Delete added business"><Trash2 size={15} /></button>
                   ) : (
-                    <EntityActions entityKey={b.key} label={b.name} />
+                    <EntityActions entityKey={b.key} label={b.name} canVerify />
                   )}
                 </div>
               </div>

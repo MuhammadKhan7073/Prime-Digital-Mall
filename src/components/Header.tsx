@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Search, ShoppingCart, Heart, MapPin, Menu, X, Moon, Sun, ChevronDown, Zap, Store, Lightbulb, CalendarCheck } from 'lucide-react'
+import { Search, ShoppingCart, Heart, MapPin, Menu, X, Moon, Sun, ChevronDown, Zap, Store, Lightbulb, CalendarCheck, Package } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { getCity } from '@/lib/catalog'
 import { verticals } from '@/data/verticals'
@@ -105,8 +105,11 @@ export function Header() {
           <Link href="/find" className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-sm font-medium text-muted hover:bg-elevated hover:text-ink">
             <Search size={14} /> Search all
           </Link>
-          <Link href="/bookings" className="ml-auto inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-sm font-medium text-muted hover:bg-elevated hover:text-ink">
-            <CalendarCheck size={15} /> My bookings
+          <Link href="/orders" className="ml-auto inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-sm font-medium text-muted hover:bg-elevated hover:text-ink">
+            <Package size={15} /> My orders
+          </Link>
+          <Link href="/bookings" className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-sm font-medium text-muted hover:bg-elevated hover:text-ink">
+            <CalendarCheck size={15} /> Bookings
           </Link>
         </div>
       </nav>

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, LayoutGrid, Search, CalendarCheck, ShoppingCart } from 'lucide-react'
+import { Home, LayoutGrid, Search, Package, ShoppingCart } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useHydrated } from '@/lib/useHydrated'
 import { cartCount, useCart } from '@/store/cart'
@@ -29,8 +29,8 @@ export function MobileTabBar() {
       <button onClick={openSearch} className={cn(tab, 'text-muted')}>
         <Search size={20} /> Search
       </button>
-      <Link href="/bookings" className={cn(tab, active('/bookings') ? 'text-brand' : 'text-muted')}>
-        <CalendarCheck size={20} /> Bookings
+      <Link href="/orders" className={cn(tab, active('/orders') ? 'text-brand' : 'text-muted')}>
+        <Package size={20} /> Orders
       </Link>
       <button onClick={openCart} className={cn(tab, 'text-muted')}>
         <span className="relative">
