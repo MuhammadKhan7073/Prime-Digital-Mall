@@ -1,0 +1,21 @@
+# Prime Digital Mall
+
+> Pakistan's everything platform — online shopping, food delivery, doctor bookings, and home services in one place. Serves major Pakistani cities (Karachi, Lahore, Islamabad, Rawalpindi, Faisalabad, Multan, Peshawar and more). Cash on delivery, Easypaisa, and bank transfer supported. Ordering and bookings can be completed on-site or via WhatsApp.
+
+## Verticals
+
+- [Shopping](https://primedigitalmall.com/shop): Electronics, mobiles, fashion, grocery, home, beauty, appliances and books from verified Pakistani shops.
+- [Food](https://primedigitalmall.com/food): Order from restaurants — desi/BBQ, biryani, fast food, pizza, Chinese, desserts and more, delivered hot.
+- [Health](https://primedigitalmall.com/health): Book verified doctors, clinics and lab tests — in person, video, or home visit.
+- [Services](https://primedigitalmall.com/services): Book home and professional services — cleaning, AC/appliance repair, plumbing, electrician, salon at home, tutoring, movers, pest control, car care and laundry.
+
+## Key pages
+
+- [Search everything](https://primedigitalmall.com/find): Universal search across products, food, doctors and services.
+- [Today's Deals](https://primedigitalmall.com/deals): Discounted products across all shops.
+- [List your business](https://primedigitalmall.com/request): Businesses can request to join the platform.
+
+## Notes
+
+- Prices are in Pakistani Rupees (PKR / Rs).
+- The platform is customer-first and free to browse; no account required to shop or book.

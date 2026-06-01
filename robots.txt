@@ -1,0 +1,13 @@
+User-Agent: *
+Allow: /
+Disallow: /cart
+Disallow: /checkout
+Disallow: /foodcart
+Disallow: /foodcheckout
+Disallow: /bookings
+Disallow: /orders
+Disallow: /admin
+Disallow: /seller
+
+Host: https://muhammadkhan7073.github.io/Prime-Digital-Mall
+Sitemap: https://muhammadkhan7073.github.io/Prime-Digital-Mall/sitemap.xml
